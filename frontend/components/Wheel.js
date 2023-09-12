@@ -1,31 +1,49 @@
-import { React, useState} from 'react'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actionCreators from '../state/action-creators';
 
 export default function Wheel(props) {
 
-  const [rotationAngle, setRotationAngle] = useState(0);
+  const dispatch = useDispatch();
+  const wheelState = useSelector(state => state.wheel);
 
-  const rotateClockwise = () => {
-    setRotationAngle( rotationAngle + 60 );
+  const moveClockwiseClick = () => {
+    dispatch(actionCreators.moveClockwise())
   };
 
-  const rotateCounterClockwise = () => {
-    setRotationAngle( rotationAngle - 60 );
-  };
+  const moveCounterClockwiseClick = () => {
+    dispatch(actionCreators.moveCounterClockwise())
+  }
 
   return (
     <div id="wrapper">
-      <div id="wheel" style={{ transform: `rotate(${rotationAngle}deg)`}}>
-        <div className="cog active" style={{ "--i": 0 }}>B</div>
-        <div className="cog" style={{ "--i": 1 }}></div>
-        <div className="cog" style={{ "--i": 2 }}></div>
-        <div className="cog" style={{ "--i": 3 }}></div>
-        <div className="cog" style={{ "--i": 4 }}></div>
-        <div className="cog" style={{ "--i": 5 }}></div>{/* --i is a custom CSS property, no need to touch that nor the style object */}
+      <div id="wheel">
+        <div className={`cog${0 === wheelState ? ' active' : ''}`} style={{ "--i": 0 }}>
+          {0 === wheelState ? 'B' : null}
+        </div>
+        <div className={`cog${1 === wheelState ? ' active' : ''}`} style={{ "--i": 1 }}>
+          {1 === wheelState ? 'B' : null}
+        </div>
+        <div className={`cog${2 === wheelState ? ' active' : ''}`} style={{ "--i": 2 }}>
+          {2 === wheelState ? 'B' : null}
+        </div>
+        <div className={`cog${3 === wheelState ? ' active' : ''}`} style={{ "--i": 3 }}>
+          {3 === wheelState ? 'B' : null}
+        </div>
+        <div className={`cog${4 === wheelState ? ' active' : ''}`} style={{ "--i": 4 }}>
+          {4 === wheelState ? 'B' : null}
+        </div>
+        <div className={`cog${5 === wheelState ? ' active' : ''}`} style={{ "--i": 5 }}>
+          {5 === wheelState ? 'B' : null}
+        </div>{/* --i is a custom CSS property, no need to touch that nor the style object */}
       </div>
       <div id="keypad">
-        <button id="counterClockwiseBtn" onClick={rotateClockwise}>Counter clockwise</button>
-        <button id="clockwiseBtn" onClick={rotateCounterClockwise}>Clockwise</button>
+        <button id="counterClockwiseBtn" onClick={moveCounterClockwiseClick}>Counter clockwise</button>
+        <button id="clockwiseBtn" onClick={moveClockwiseClick}>Clockwise</button>
       </div>
     </div>
   )
 }
+
+
+
