@@ -19,7 +19,7 @@ export function setQuiz(quizData) {
 
 
 export function selectAnswer(selectedAnswer) { 
-  return { type: types.SET_SELECTED_ANSWER, payload: selectedAnswer} //? 
+  return { type: types.SET_SELECTED_ANSWER, payload: selectedAnswer}  
 }
 
 //MESSAGE ACTION CREATOR//
@@ -48,7 +48,9 @@ export function fetchQuiz() {
       .then((res) => {
         dispatch(setQuiz(res.data));
       })
-      .catch(err)
+      .catch((error) => {
+        console.error('Error fetching quiz', error)
+      })
   }
 }
 export function postAnswer() {
@@ -64,7 +66,9 @@ export function postAnswer() {
         dispatch(setMessage(res.data.message));
         dispatch(fetchQuiz());
       })
-      .catch(err)
+      .catch((error) => {
+        console.error('Error posting answer', error);
+      })
   }
 }
 export function postQuiz() {
@@ -78,7 +82,9 @@ export function postQuiz() {
        dispatch(setMessage('Quiz submitted successfully'));
        dispatch(resetForm());
       })
-      .catch(error)
+      .catch((error) => {
+        console.error('Error posting quiz', error);
+      })
   }
 }
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
