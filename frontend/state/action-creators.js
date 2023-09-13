@@ -18,23 +18,23 @@ export function setQuiz(quizData) {
  }
 
 
-export function selectAnswer() { 
-  return { type: types.SET_SELECTED_ANSWER, payload: null} //? 
+export function selectAnswer(selectedAnswer) { 
+  return { type: types.SET_SELECTED_ANSWER, payload: selectedAnswer} //? 
 }
 
 //MESSAGE ACTION CREATOR//
-export function setMessage() {
-
+export function setMessage(message) {
+  return { type: types.SET_INFO_MESSAGE, payload: message }
  }
 
 
  //FORM ACTION CREATOR//
-export function inputChange() {
-
+export function inputChange(newValue) {
+  return {type: types.INPUT_CHANGE, payload: newValue }
  }
 
 export function resetForm() {
-
+  return {type: types.RESET_FORM }
  }
 
 // ❗ Async action creators
@@ -46,7 +46,7 @@ export function fetchQuiz() {
     axios
       .get('http://localhost:9000/api/quiz/next')
       .then((res) => {
-        dispatch(setQuiz());
+        dispatch(setQuiz(res.data));
       })
       .catch(err)
   }
@@ -57,6 +57,14 @@ export function postAnswer() {
     // - Dispatch an action to reset the selected answer state
     // - Dispatch an action to set the server message to state
     // - Dispatch the fetching of the next quiz
+    axios
+      .post('http://localhost:9000/api/quiz/answer')
+      .then((res) => {
+        dispatch(selectAnswer());
+        dispatch(setMessage(res.data.message));
+        dispatch(fetchQuiz());
+      })
+      .catch(err)
   }
 }
 export function postQuiz() {
@@ -64,6 +72,13 @@ export function postQuiz() {
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
+    axios
+      .post('http://localhost:9000/api/quiz/new')
+      .then((res) => {
+       dispatch(setMessage('Quiz submitted successfully'));
+       dispatch(resetForm());
+      })
+      .catch(error)
   }
 }
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
