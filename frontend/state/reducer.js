@@ -2,6 +2,7 @@
 import { combineReducers } from 'redux';
 import * as types from './action-types';
 
+//WHEEL REDUCER//
 const initialWheelState = 0
 function wheel(state = initialWheelState, action) {
   switch(action.type) {
@@ -20,7 +21,8 @@ function wheel(state = initialWheelState, action) {
   }
 }
 
-const initialQuizState = null
+//QUIZ REDUCER//
+const initialQuizState = null //quizData? or []?
 function quiz(state = initialQuizState, action) {
   switch(action.type) {
     case types.SET_QUIZ_INTO_STATE: 
@@ -34,14 +36,23 @@ function quiz(state = initialQuizState, action) {
 
 const initialSelectedAnswerState = null
 function selectedAnswer(state = initialSelectedAnswerState, action) {
-  return state
+  switch(action.type) {
+    case types.SET_SELECTED_ANSWER:
+      {
+        return action.payload
+      }
+    default:
+      return state;
+  }
 }
 
+//MESSAGE REDUCER//
 const initialMessageState = ''
 function infoMessage(state = initialMessageState, action) {
   return state
 }
 
+//FORM REDUCER//
 const initialFormState = {
   newQuestion: '',
   newTrueAnswer: '',

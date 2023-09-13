@@ -1,6 +1,9 @@
+import axios from 'axios';
+
 // ❗ You don't need to add extra action creators to achieve MVP
 import * as types from './action-types';
 
+//WHEEL ACTION CREATOR//
 export function moveClockwise() { 
   return { type: types.MOVE_CLOCKWISE}
 }
@@ -9,18 +12,23 @@ export function moveCounterClockwise() {
   return { type: types.MOVE_COUNTERCLOCKWISE}
 }
 
-export function selectAnswer() { 
+//QUIZ ACTION CREATOR//
+export function setQuiz(quizData) {
+  return { type: types.SET_QUIZ_INTO_STATE, payload: quizData }
+ }
 
+
+export function selectAnswer() { 
+  return { type: types.SET_SELECTED_ANSWER, payload: null} //? 
 }
 
+//MESSAGE ACTION CREATOR//
 export function setMessage() {
 
  }
 
-export function setQuiz() {
-  return { type: types.SET_QUIZ_INTO_STATE, payload: quizData }
- }
 
+ //FORM ACTION CREATOR//
 export function inputChange() {
 
  }
@@ -35,6 +43,12 @@ export function fetchQuiz() {
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
+    axios
+      .get('http://localhost:9000/api/quiz/next')
+      .then((res) => {
+        dispatch(setQuiz());
+      })
+      .catch(err)
   }
 }
 export function postAnswer() {
