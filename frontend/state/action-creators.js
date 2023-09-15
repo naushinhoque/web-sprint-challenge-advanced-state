@@ -29,8 +29,8 @@ export function setMessage(message) {
 
 
  //FORM ACTION CREATOR//
-export function inputChange(newValue) {
-  return {type: types.INPUT_CHANGE, payload: newValue }
+export function inputChange(inputId, value) {
+  return {type: types.INPUT_CHANGE, payload: {inputId, value} }
  }
 
 export function resetForm() {
@@ -69,16 +69,17 @@ export function postAnswer({ quiz_id, answer_id}) {
       })
   }
 }
-export function postQuiz({ newQuestion, newTrue, newFalse }) {
+export function postQuiz({ newQuestion, newTrueAnswer, newFalseAnswer }) {
   return function (dispatch) {
     axios
-      .post('http://localhost:9000/api/quiz/new', { newQuestion, newTrue, newFalse })
+      .post('http://localhost:9000/api/quiz/new', { "question_text": newQuestion, "true_answer_text": newTrueAnswer, "false_answer_text": newFalseAnswer })
       .then((res) => {
-       dispatch(setMessage(res.data.message));
+       dispatch(setMessage(`Congrats: "${res.data.question}" is a great question!`));
        dispatch(resetForm());
       })
       .catch(err => {
         const errToDisplay = err.response ? err.response.data.message : err.message
+        console.log(err.response)
         dispatch(setMessage(errToDisplay))
       })
   }
