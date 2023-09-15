@@ -22,7 +22,7 @@ function wheel(state = initialWheelState, action) {
 }
 
 //QUIZ REDUCER//
-const initialQuizState = null //quizData? or []?
+const initialQuizState = null 
 function quiz(state = initialQuizState, action) {
   switch(action.type) {
     case types.SET_QUIZ_INTO_STATE: 

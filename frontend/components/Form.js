@@ -3,7 +3,12 @@ import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
 
 export function Form(props) {
-  const { newQuestion, newTrueAnswer, newFalseAnswer } = formData;
+  const [formData, setFormData] = useState({
+    newQuestion: '',
+    newTrueAnswer: '',
+    newFalseAnswer: ''
+  });
+  //const { newQuestion, newTrueAnswer, newFalseAnswer } = formData;
 
   const onChange = evt => {
     const { id, value } = evt.target;
@@ -27,7 +32,9 @@ export function Form(props) {
   };
 
   const isDisabled = () => {
-    return Object.values(formData).some(value => !value.trim().length)
+    const { newQuestion, newTrueAnswer, newFalseAnswer } = formData;
+    return ![newQuestion, newTrueAnswer, newFalseAnswer].every(value => value.trim().length >= 2);
+    //return Object.values(formData).some(value => !value.trim().length)
   }
 
   return (
