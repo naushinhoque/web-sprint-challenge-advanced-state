@@ -4,34 +4,44 @@ import * as actionCreators from '../state/action-creators';
 
 const Quiz = (props) => {
   useEffect(() => {
-    props.fetchQuiz();
-    props.postAnswer();
-    props.postQuiz();
+    // props.postAnswer(); after I submity the answer and needs to return object 
+    // props.postQuiz();
+    !quizData && props.fetchQuiz()
   }, []);
 
+
   const { quizData, selectedAnswer, message } = props;
+  console.log(quizData);
+
+  
 
   return (
     <div id="wrapper">
       {/* Display quiz questions and answers */}
-      {quizData && (
+      {quizData ? (
         <div>
           <h2>{quizData.question}</h2>
-          <ul>
-            {quizData.answers.map((answer, index) => (
-              <li key={index}>{answer}</li>
-            ))}
-          </ul>
+          <div id="quizAnswers">
+              <div className={`answer${selectedAnswer === quizData.answers[0].answer_id ? ' selected' : ''}`} onClick={() => props.selectAnswer(quizData.answers[0].answer_id)}>
+                {quizData.answers[0].text}
+                <button>
+                  {selectedAnswer === quizData.answers[0].answer_id ? 'SELECTED' : 'Select'}
+                </button>
+              </div>
+
+              <div className={`answer${selectedAnswer === quizData.answers[1].answer_id ? ' selected' : ''}`} onClick={() => props.selectAnswer(quizData.answers[1].answer_id)}>
+                {quizData.answers[1].text}
+                <button>
+                  {selectedAnswer === quizData.answers[1].answer_id ? 'SELECTED' : 'Select'}
+                </button>
+            </div>
         </div>
-      )}
-
-      {/* Display selected answer */}
-      {selectedAnswer && <p>Selected Answer: {selectedAnswer}</p>}
-
-      {/* Display server message */}
-      {message && <p>Server Message: {message}</p>}
+        <button id="submitAnswerBtn" disabled={!selectedAnswer} onClick={() => props.postAnswer({ quiz_id: quizData.quiz_id, answer_id: selectedAnswer })}>Submit answer</button>
+      </div>
+      ): 'Loading next quiz...'}
+      
     </div>
-  );
+  )
 };
 
 const mapStateToProps = (state) => {
